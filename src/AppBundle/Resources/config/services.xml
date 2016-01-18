@@ -6,8 +6,12 @@
 
 
     <services>
-        <service id="entry.manager" class="AppBundle\Manager\EntryManager">
+        <service id="entry.excel.manager" class="AppBundle\Extractors\Manager\EntryExcelManager">
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
+        </service>
+
+        <service id="excel.extractor.catalunyacaixa" class="AppBundle\Extractors\Extractor\ExcelExtractorCatalunyaCaixa">
+            <argument type="service" id="entry.excel.manager"/>
         </service>
 
     </services>
