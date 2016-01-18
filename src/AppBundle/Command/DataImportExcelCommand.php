@@ -31,31 +31,30 @@ class DataImportExcelCommand extends ContainerAwareCommand
             // ...
         }
 
-        $entryManager = $this->getContainer()->get('entry.manager');
+        //extract all files from a folder
+
+//        $extractor->extractFromPath($path);
+
+
 
         $em = $this->getContainer()->get('doctrine')->getManager();
         $finder = new Finder();
         $path = __DIR__ . "/../../../var/data/";
         $finder->files()->in($path);
 
-        foreach ($finder as $file) {
-            if ($file->getExtension() == 'xls') {
+        $extractor = $this->getContainer()->get('excel.extractor.catalunyacaixa');
+        $entryExcels = $extractor->extractFromPath($finder);
 
-                $output->writeln('Processing file ' . $file->getFilename());
-                $objPHPExcel = \PHPExcel_IOFactory::load($file);
-                $worksheet = $objPHPExcel->getSheet(0);
-                $totalUpdated = 0;
-                foreach ($worksheet->getRowIterator(13) as $row) {
-                    $entryExcel = $entryManager->createFromRow($row);
-                    if (!$entryManager->existsEntryExcel($entryExcel)) {
-                        $entry = $entryManager->createEntryEntity($entryExcel);
-                        $em->persist($entry);
-                        $totalUpdated++;
-                    }
-
-                }
+        $entryExcelManager = $this->getContainer()->get('entry.excel.manager');
+        $totalUpdated = 0;
+        foreach ($entryExcels as $entryExcel) {
+            if (!$entryExcelManager->existsEntryExcel($entryExcel)) {
+                $totalUpdated++;
+                $entry = $entryExcelManager->createEntryEntity($entryExcel);
+                $em->persist($entry);
             }
         }
+
         $em->flush();
         $output->writeln('Created: ' . $totalUpdated);
     }

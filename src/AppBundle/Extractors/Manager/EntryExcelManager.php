@@ -5,18 +5,19 @@
  * Time: 22:44
  */
 
-namespace AppBundle\Manager;
+namespace AppBundle\Extractors\Manager;
 
 use AppBundle\Entity\Entry;
-use AppBundle\Entity\EntryExcel;
+use AppBundle\Extractors\Entity\EntryExcel;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Class EntryManager
  * Manage entry stuff
+ * ServiceName entry.excel.manager
  * @package AppBundle\Manager
  */
-class EntryManager
+class EntryExcelManager
 {
 
     /** @var ObjectManager */
@@ -29,7 +30,7 @@ class EntryManager
 
     public function existsEntryExcel(EntryExcel $entryExcel)
     {
-        //check if exist with same name, same date and same value
+        //check if exist with same name, same date and same value into MySql
         $oldEntry = $this->em->getRepository('AppBundle:Entry')->findOneBy(
             array(
                 'concept' => $entryExcel->getConcept(),
@@ -41,6 +42,10 @@ class EntryManager
         return $oldEntry ? true : false;
     }
 
+    /**
+     * @param EntryExcel $entryExcel
+     * @return Entry
+     */
     public function createEntryEntity(EntryExcel $entryExcel)
     {
         $entry = new Entry();

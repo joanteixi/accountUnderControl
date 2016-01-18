@@ -5,7 +5,7 @@
  * Time: 2:26
  */
 
-namespace AppBundle\Entity;
+namespace AppBundle\Extractors\Entity;
 
 
 class EntryExcel
@@ -15,8 +15,6 @@ class EntryExcel
     protected $date;
 
     protected $value;
-
-
 
 
     /**
