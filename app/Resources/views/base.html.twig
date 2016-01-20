@@ -1,13 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/assets/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/assets/css/sb-admin.css"/>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>>
+<div id="wrapper">
+
+    {% include('AppBundle::navbar.html.twig') %}
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        {{ title }}
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i> <a href="index.html">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-edit"></i> {{ title }}
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+
+
+    <script type="text/javascript" charset="UTF-8" src="/assets/js/jquery.js"></script>
+    {% block javascripts %}{% endblock %}
+</div>
+</body>
 </html>

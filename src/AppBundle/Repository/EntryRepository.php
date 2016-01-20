@@ -10,4 +10,10 @@ namespace AppBundle\Repository;
  */
 class EntryRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getEntries()
+    {
+        $dql = 'SELECT e FROM AppBundle:Entry e order by e.date desc';
+
+        return $this->getEntityManager()->createQuery($dql);
+    }
 }
