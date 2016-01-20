@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DoctrineExtensions\Taggable\Taggable;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Entry
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="entry")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EntryRepository")
  */
-class Entry
+class Entry implements Taggable
 {
     /**
      * @var int
@@ -41,6 +43,12 @@ class Entry
      * @ORM\Column(name="value", type="decimal", precision=10, scale=2)
      */
     private $value;
+
+    /**
+     * @var
+     * Taggale implementation
+     */
+    private $tags;
 
 
     /**
@@ -123,6 +131,23 @@ class Entry
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function getTags()
+    {
+        $this->tags = $this->tags ?: new ArrayCollection();
+
+        return $this->tags;
+    }
+
+    public function getTaggableType()
+    {
+        return 'entry_tag';
+    }
+
+    public function getTaggableId()
+    {
+        return $this->getId();
     }
 }
 

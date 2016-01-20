@@ -22,7 +22,7 @@
                 <tbody>
                 {% for entry in pagination %}
                     <tr>
-                        <td>{{ entry.concept}}</td>
+                        <td>{{ entry.id }} -- {{ entry.concept}} {% for tag in entry.getTags %} <i>{{ tag }}</i>{% endfor %}</td>
                         <td>{{ entry.date|date('d-m-Y')}}</td>
                         <td>{{ entry.value }} €</td>
                         {#<td><a href="{{ path('url_delete', {slug: entry.slug}) }}" class="btn">Delete</a> </td>#}

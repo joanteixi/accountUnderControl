@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "89f50165289fee6c989e5ee67bbea593",
-    "content-hash": "af2dd325e03ad1a450e3c4739e9b65b1",
+    "hash": "5aa30e826676a469ab99c14c0362c8e6",
+    "content-hash": "62c30e9413dd57959c98894371c56dc3",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -771,6 +771,88 @@
                 "orm"
             ],
             "time": "2015-12-25 15:50:05"
+        },
+        {
+            "name": "fpn/doctrine-extensions-taggable",
+            "version": "v0.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FabienPennequin/DoctrineExtensions-Taggable.git",
+                "reference": "ee7245fc7c3012ea1b1ed932f62ca258b39d8bea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FabienPennequin/DoctrineExtensions-Taggable/zipball/ee7245fc7c3012ea1b1ed932f62ca258b39d8bea",
+                "reference": "ee7245fc7c3012ea1b1ed932f62ca258b39d8bea",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": ">=2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "DoctrineExtensions": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Pennequin",
+                    "email": "fabien@pennequin.me"
+                }
+            ],
+            "description": "Tag system using Doctrine ORM",
+            "keywords": [
+                "Taggable",
+                "tag"
+            ],
+            "time": "2012-09-20 19:58:42"
+        },
+        {
+            "name": "fpn/tag-bundle",
+            "version": "v0.9.0",
+            "target-dir": "FPN/TagBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FabienPennequin/FPNTagBundle.git",
+                "reference": "2cc70ca1405abec9410352ab7243c809432ceff5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FabienPennequin/FPNTagBundle/zipball/2cc70ca1405abec9410352ab7243c809432ceff5",
+                "reference": "2cc70ca1405abec9410352ab7243c809432ceff5",
+                "shasum": ""
+            },
+            "require": {
+                "fpn/doctrine-extensions-taggable": "v0.9.0",
+                "symfony/framework-bundle": ">=2.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "FPN\\TagBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Pennequin",
+                    "email": "fabien@pennequin.me"
+                }
+            ],
+            "description": "FPN Tag Bundle",
+            "keywords": [
+                "tag",
+                "tagging"
+            ],
+            "time": "2014-05-07 06:49:53"
         },
         {
             "name": "incenteev/composer-parameter-handler",
