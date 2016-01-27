@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Entry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -30,27 +31,38 @@ class DefaultController extends Controller
             $tagManager->loadTagging($entry);
         }
 
+        //preload all tags...
+        $tags = $this->getDoctrine()->getRepository('AppBundle:Tag')->findAll();
+
         return $this->render(
             'AppBundle:Entry:index.html.twig',
             array(
-                'pagination' => $pagination
+                'pagination' => $pagination,
+                'tags' => $tags
             )
         );
     }
 
     /**
      * @param Request $request
-     * @param Entry $entry
-     * @Route("/createTag/{entry}", name="entry.tag.add")
+     * @Route("/createTag", name="entry.tag.add")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addTagAction(Request $request, Entry $entry)
+    public function addTagAction(Request $request)
     {
+        $entry = $this->getDoctrine()->getRepository('AppBundle:Entry')->find($request->get('id'));
         $tagManager = $this->get('fpn_tag.tag_manager');
-        $fooTag = $tagManager->loadOrCreateTag('foo');
-        $tagManager->addTag($fooTag, $entry);
+        $tag = $tagManager->loadOrCreateTag($request->get('tag'));
+        $tagManager->addTag($tag, $entry);
         $tagManager->saveTagging($entry);
 
-        return $this->redirect($this->generateUrl('homepage'));
+        //return json...
+        $response = new JsonResponse();
+        $response->setData(array(
+            'id' => $entry->getId(),
+            'tag' => $request->get('tag')
+        ));
+
+        return $response;
     }
 }

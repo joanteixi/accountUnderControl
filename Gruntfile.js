@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     // Configurable paths
     var config = {
         app: 'frontend',
-        dist: 'dist'
+        dist: 'web/assets/'
     };
 
     grunt.initConfig({
@@ -25,8 +25,8 @@ module.exports = function (grunt) {
             },
 
             js: {
-                files: ['<%= config.app %>/scripts/{,*/}*.js'],
-                tasks: ["jshing"],
+                files: ['<%= config.app %>/js/{,*/}*.js'],
+                tasks: ["copy:dist"],
                 options: {
                     livereload: false
                 }
@@ -55,6 +55,20 @@ module.exports = function (grunt) {
                 }]
             },
             server: '.tmp'
+        },
+
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= config.app %>',
+                    dest: '<%= config.dist %>',
+                    src: [
+                        'js/*.js',
+                    ]
+                }]
+            }
         },
 
         // Make sure code styles are up to par and there are no obvious mistakes
@@ -102,10 +116,10 @@ module.exports = function (grunt) {
         },
 
         bowercopy: {
-			options: {
-				srcPrefix: 'bower_components',
-				destPrefix: 'web/assets'
-			 },
+            options: {
+                srcPrefix: 'bower_components',
+                destPrefix: 'web/assets'
+            },
             myCss: {
                 options: {
                     srcPrefix: 'frontend'
@@ -114,29 +128,29 @@ module.exports = function (grunt) {
                     'css/sb-admin.css': 'css/sb-admin.css'
                 }
             },
-			scripts: {
-				files: {
-					'js/jquery.js': 'jquery/dist/jquery.js',
-					'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
-				}
-		 	},
-			stylesheets: {
-				files: {
-					'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
-					'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
+            scripts: {
+                files: {
+                    'js/jquery.js': 'jquery/dist/jquery.js',
+                    'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js'
+                }
+            },
+            stylesheets: {
+                files: {
+                    'css/bootstrap.css': 'bootstrap/dist/css/bootstrap.css',
+                    'css/font-awesome.css': 'font-awesome/css/font-awesome.css'
 
-				}
-		 	},
-			fonts: {
-				files: {
-					'fonts': 'font-awesome/fonts'
-				}
-	       		}
-		}
-	});
+                }
+            },
+            fonts: {
+                files: {
+                    'fonts': 'font-awesome/fonts'
+                }
+            }
+        }
+    });
 
-	grunt.loadNpmTasks('grunt-bowercopy');
-	grunt.registerTask('default', ['bowercopy']);
+    grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.registerTask('default', ['bowercopy']);
     grunt.registerTask('build', [
         'clean:dist',
         'wiredep',

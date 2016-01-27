@@ -20,14 +20,14 @@
                         <th>Add tag</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="entity-list" data-urlAddTag="{{ path('entry.tag.add') }}">
                     {% for entry in pagination %}
-                        <tr>
-                            <td>{{ entry.concept }} {% for tag in entry.getTags %} <i>{{ tag }}</i>{% endfor %} </td>
+                        <tr id="{{ entry.id }}">
+                            <td class="field-concept">{{ entry.concept }} {% for tag in entry.getTags %} <i>{{ tag }} </i>{% endfor %} </td>
                             <td>{{ entry.date|date('d-m-Y') }}</td>
                             <td>{{ entry.value }} €</td>
                             <td>
-                                <button class="btn btn-xs btn-info">Add tag</button>
+                                <button class="btn btn-xs btn-info addTagBtn" data-toggle="modal"  data-id="{{ entry.id }}" data-target="#myModal">Add tag</button>
                             </td>
                             {#<td><a href="{{ path('url_delete', {slug: entry.slug}) }}" class="btn">Delete</a> </td>#}
                             {#<td><a href="{{ path('url_edit', {slug: entry.slug}) }}" class="btn">Edit</a> </td>#}
@@ -47,5 +47,28 @@
 
     </ul>
 
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add tag</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Select one tag</p>
+                    <ul>
+                        {% for tag in tags %}
+                            <a class="btn addTagAction" href="#{{ tag }}">{{ tag }}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 {% endblock %}
 
