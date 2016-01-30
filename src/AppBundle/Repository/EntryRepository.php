@@ -16,4 +16,47 @@ class EntryRepository extends \Doctrine\ORM\EntityRepository
 
         return $this->getEntityManager()->createQuery($dql);
     }
+
+    public function getEntriesWithoutTags()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT e.id, e.concept FROM entry e
+                WHERE NOT EXISTS (SELECT t.resource_id FROM tagging t WHERE t.resource_id = e.id)
+                ';
+        $results = $conn->fetchAll($sql);
+
+        return $results;
+
+    }
+
+    /**
+     * Look for a entry with tag.
+     *
+     * @param $entry
+     * @return mixed
+     */
+    public function matchEntryByNameWithTag($entry)
+    {
+        $dql = 'SELECT e FROM AppBundle:Entry e
+                WHERE e.concept = :concept AND
+                e.id != :id';
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setParameter('concept', $entry['concept']);
+        $query->setParameter('id', $entry['id']);
+
+        $entryWithTag = $query->setMaxResults(1)->execute();
+
+        if (isset($entryWithTag[0])) {
+            $dql = 'SELECT t FROM AppBundle:Tag t
+                LEFT JOIN t.tagging tg
+                WHERE tg.resourceId = :id';
+
+            $query = $this->getEntityManager()->createQuery($dql);
+            $query->setParameter('id', $entryWithTag[0]->getId());
+
+            return $query->execute();
+        }
+    }
 }
