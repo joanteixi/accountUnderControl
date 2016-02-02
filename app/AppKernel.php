@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FPN\TagBundle\FPNTagBundle(),
+            new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
 
         ];
 

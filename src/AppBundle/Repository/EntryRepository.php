@@ -10,11 +10,13 @@ namespace AppBundle\Repository;
  */
 class EntryRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getEntries()
+    public function getEntriesQueryBuilder()
     {
-        $dql = 'SELECT e FROM AppBundle:Entry e order by e.date desc';
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->addOrderBy('e.date', 'desc');
 
-        return $this->getEntityManager()->createQuery($dql);
+        return $queryBuilder;
+
     }
 
     public function getEntriesWithoutTags()

@@ -3,20 +3,36 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Entry;
+use AppBundle\Type\Filters\EntryFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
+     * @param $request Request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
+        //prepare filters
+        $form = $this->createForm('AppBundle\Type\Filters\EntryFilterType');
+        $qb = $this->getDoctrine()->getRepository('AppBundle:Entry')->getEntriesQueryBuilder();;
+
+        if ($request->query->has($form->getName())) {
+            // manually bind values from the request
+            $form->submit($request->query->get($form->getName()));
+
+            // build the query from the given form object
+            $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $qb);
+        }
+
         //get list of entries
-        $query = $this->getDoctrine()->getRepository('AppBundle:Entry')->getEntries();
+        $query = $qb->getQuery();
         $tagManager = $this->get('fpn_tag.tag_manager');
 
         $paginator = $this->get('knp_paginator');
@@ -38,7 +54,8 @@ class DefaultController extends Controller
             'AppBundle:Entry:index.html.twig',
             array(
                 'pagination' => $pagination,
-                'tags'       => $tags
+                'tags'       => $tags,
+                'form'       => $form->createView()
             )
         );
     }
