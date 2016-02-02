@@ -97,4 +97,37 @@ class DefaultController extends Controller
         return $this->redirectToRoute('homepage');
 
     }
+
+    /**
+     * @Route("/tag/{tag}", name="entry.tag.list")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listByTag(Request $request, $tag)
+    {
+        $query = $this->getDoctrine()->getRepository('AppBundle:Entry')->getEntriesInTag($tag);
+        $tagManager = $this->get('fpn_tag.tag_manager');
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            200/*limit per page*/
+        );
+
+        // TODO FIX THIS!!! LOT OF QUERIES!
+        foreach ($pagination as $entry) {
+            $tagManager->loadTagging($entry);
+        }
+
+        //preload all tags...
+        $tags = $this->getDoctrine()->getRepository('AppBundle:Tag')->findAll();
+
+        return $this->render(
+            'AppBundle:Entry:index.html.twig',
+            array(
+                'pagination' => $pagination,
+                'tags'       => $tags
+            )
+        );
+    }
 }

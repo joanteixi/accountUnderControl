@@ -17,3 +17,7 @@ v.0.2
 * Create view for categories (labels)
 
 v.0.3
+* add navigation links
+* filters by month + year (from - to) 
+* show graphics by label, when open label
+
